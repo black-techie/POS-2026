@@ -93,16 +93,15 @@ class POS:
 
     def rj(self):
         dt = None
-        with open("database.bin", "rb") as file:
-            dt = json.loads(Aes(self.pvk, self.siv).decrypt(file.read()))
-            print(dt)
+        with open("database.json", "r") as file:
+            dt = json.loads(file.read())
         return dt
 
     def wj(self, dt):
         res = False
-        with open("database.bin", "wb") as file:
+        with open("database.json", "w") as file:
             try:
-                file.write(Aes(self.pvk, self.siv).encrypt(json.dumps(dt)))
+                file.write(json.dumps(dt))
                 res = True
             except Exception as e:
                 print("Error writing database File => {}".format(e))
@@ -193,7 +192,7 @@ class POS:
                                 self.rfid.write(9, second_half)
                                 self.rfid.write(10, user_type_padded)
                                 self.rfid.stop_crypto1()
-                                self.wj(data)
+                                #self.wj(data)
                                 del data
                                 return crd
                             else:
@@ -227,7 +226,6 @@ class POS:
 
     def listen_keypad(self):
         return self.keypad.read_keypad()
-            
 
     def status_icon(self, status):
         self.lcd.move_to(7, 0)
@@ -605,7 +603,7 @@ class POS:
 #                         unit_price=unit_price,
 #                         total_units=charge,
 #                     )
-                    time.sleep(3)
+                    time.sleep(2)
                 break
             elif key == "*":
                 if charge != "":
@@ -1013,7 +1011,7 @@ class POS:
             settings = data["settings"]
             while self.station.isconnected():
                 response = urequests.post(
-                    "https://alert-silvia-products-174f5b71.koyeb.app/report/pos/create/extra",
+                    "https://alert-silvia-products-174f5b71.koyeb.app/report/pos/create/create",
                     headers={"content-type": "application/json; charset=utf-8"},
                     data=json.dumps(
                         {"api_key": api_key, "transactions": transactions, "settings": settings}
@@ -1073,6 +1071,5 @@ x.login_screen()
 x.loading_screen(3, x.stupid_function)
 x.splash_screen()
 x.main_screen()
-
 
 
