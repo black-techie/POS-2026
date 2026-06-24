@@ -1,8 +1,1 @@
-{
-    "settings": [], 
-    "ppl": 2000.0, 
-    "key": "112211", 
-    "api_key": "1VEydBvnP6HkaUvxTleACtdpjgvRRQ2d", 
-    "cf": 5.9, 
-    "transactions": []
-}
+{"settings": [], "ppl": 2000.0, "key": "112211", "api_key": "1VEydBvnP6HkaUvxTleACtdpjgvRRQ2d", "cf": 5.9, "transactions": [{"topUp": {"40382407602": 2500.0}}, {"topUp": {"40382407602": 1000.0}}, {"topUp": {"40382407602": 2500.0}}, {"topUp": {"24492082416": 1500.0}}]}

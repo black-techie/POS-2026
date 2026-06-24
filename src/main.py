@@ -557,6 +557,16 @@ class POS:
                 break
 
     def transaction_screen(self):
+        ln = len(self.rj()["transactions"])
+        if(ln > 60):
+            self.lcd.clear()
+            self.lcd.move_to(0, 1)
+            self.lcd.putstr("Tafadhali Tuma Ripoti")
+            self.lcd.move_to(0, 2)
+            self.lcd.putstr(" Na ujaribu tena !")
+            time.sleep(5)
+            self.lcd.clear()
+            return 0
         unit_price = self.price_per_litter
         self.lcd.clear()
         self.lcd.putstr("Ongeza salio")
@@ -1001,7 +1011,7 @@ class POS:
             settings = data["settings"]
             while self.station.isconnected():
                 response = urequests.post(
-                    "https://nyirendas-engine-2025.koyeb.app/api/v0.1/updown/pos/upload",
+                    "http://nyirendas-engine-2025.koyeb.app/api/v0.1/updown/pos/upload",
                     headers={"content-type": "application/json; charset=utf-8"},
                     data=json.dumps(
                         {"api_key": api_key, "transactions": transactions, "settings": settings}
