@@ -115,15 +115,8 @@ class POS:
         srt = b"####^%^&*((!&^@&)***!@_!#)(!_!#)"
         iv = b":@*&^%$%$##$%876"
         secret = Aes(srt, iv)
-        encryption_key = [0x01, 0x23, 0x45, 0x67, 0x89, 0xAB]
-        float_value = 12345.67
         user_type = 2050
-        encryption_key_padded = self.pad_to_16_bytes(bytes(encryption_key))
-        float_value_padded = self.pad_to_16_bytes(self.float_to_bytes(float_value))
         user_type_padded = self.pad_to_16_bytes(self.int_to_bytes(user_type))
-
-        print("\nPlace card before reader to write data.\n")
-
         try:
             while True:
                 key = self.listen_keypad()
@@ -192,7 +185,7 @@ class POS:
                                 self.rfid.write(9, second_half)
                                 self.rfid.write(10, user_type_padded)
                                 self.rfid.stop_crypto1()
-                                #self.wj(data)
+                                self.wj(data)
                                 del data
                                 return crd
                             else:
@@ -650,7 +643,6 @@ class POS:
                 break
 
     def change_price_per_volume(self):
-        unit_price = 1000
         self.lcd.clear()
         self.lcd.putstr("Gharama Za Maji")
         time.sleep(1)
@@ -699,7 +691,6 @@ class POS:
                     break
 
     def change_calibration_factor(self):
-        unit_price = 1000
         self.lcd.clear()
         self.lcd.putstr("Badili Kipimo")
         time.sleep(1)
@@ -865,7 +856,6 @@ class POS:
         time.sleep(1)
         isValid = self.login_screen()
         if isValid:
-            default = self.default_password
             input_pass = ""
             self.lcd.clear()
             self.lcd.move_to(0, 0)
@@ -1011,7 +1001,7 @@ class POS:
             settings = data["settings"]
             while self.station.isconnected():
                 response = urequests.post(
-                    "https://alert-silvia-products-174f5b71.koyeb.app/report/pos/create/create",
+                    "https://nyirendas-engine-2025.koyeb.app/api/v0.1/updown/pos/upload",
                     headers={"content-type": "application/json; charset=utf-8"},
                     data=json.dumps(
                         {"api_key": api_key, "transactions": transactions, "settings": settings}
